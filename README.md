@@ -27,3 +27,8 @@ This process will output a file called `bulk_classification_results_X.csv` where
 1. Create a folder exclusively containing images of Pokemon or a folder exclusively containing images of Digimon.
 2. Run the following command from the root of your repository: `python main.py classify-bulk`
 3. Input the relative or absolute path of the folder of images you want to classify.
+
+## Credit
+Thank you to Vinícius Vale for the initial training data I used for this model.
+
+V. S. Vale, "Pokemon vs Digimon Image Dataset," Kaggle, 2020. [Online]. Available: https://www.kaggle.com/datasets/vsvale/pokemon-vs-digimon-image-dataset.

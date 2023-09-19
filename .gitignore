@@ -160,4 +160,9 @@ cython_debug/
 #.idea/
 
 # Training data
-data/
+data/*
+!data/data-goes-here
+
+# Results
+results/*
+!results/results-go-here
