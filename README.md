@@ -31,4 +31,6 @@ This process will output a file called `bulk_classification_results_X.csv` where
 ## Credit
 Thank you to Vinícius Vale for the initial training data I used for this model.
 
+All images of Pokemon and Digimon belong to their respective creators.
+
 V. S. Vale, "Pokemon vs Digimon Image Dataset," Kaggle, 2020. [Online]. Available: https://www.kaggle.com/datasets/vsvale/pokemon-vs-digimon-image-dataset.
