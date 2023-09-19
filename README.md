@@ -11,8 +11,7 @@ Using a conventional neural network to classify images Pokemon and Digimon.
 ## Program Setup
 1. Clone this repository.
 2. Open the terminal and navigate to the directory where the repository is located.
-3. Create a folder called `data` in the root of the repository.
-4. Download the [Pokemon vs. Digimon dataset](https://www.kaggle.com/datasets/vsvale/pokemon-vs-digimon-image-dataset) from Kaggle. Unzip the data and copy the folder `automlpoke` to the `data` folder you just created.
+3. Download the [Pokemon vs. Digimon dataset](https://www.kaggle.com/datasets/vsvale/pokemon-vs-digimon-image-dataset) from Kaggle. Unzip the data and copy the folder `automlpoke` to the `data` folder you just created.
 
 ## Training the Model
 This process is not required, since the trained model can be found as `models\pokemon_vs_digimon_CNN_latest.h5`. Training the model will create (or overwrite) the file `results\pokemon_vs_digimon_CNN_latest.h5`, as well as create a CSV file containing information about the training process.
