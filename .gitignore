@@ -172,3 +172,6 @@ models/*
 !models/models-go-here
 !models/pokemon_vs_digimon_CNN_latest.h5
 !training_file_details.csv
+
+# Model conversion environment
+myenv/

@@ -99,6 +99,7 @@ def train_model():
     # Save model to a file
     model.save("./results/pokemon_vs_digimon_CNN_latest.h5")
 
+
 def load_and_test_model():
     # Load the model based on KAGGLE_MODE
     try:
@@ -205,11 +206,23 @@ def bulk_classify():
     print(f"Correct predictions: {len(df[df['Label'] == df['Predicted Label']])}")
     print(f"Accuracy: {len(df[df['Label'] == df['Predicted Label']]) / len(test_filenames) * 100:.2f}%")
 
-if __name__ == "__main__":
+if not KAGGLE_MODE and __name__ == "__main__":
     if len(sys.argv) < 2:
         choice = input("Do you want to train a new model, classify a single image, or classify a group of images with one label? (train/classify/classify-bulk): ")
     else:
         choice = sys.argv[1]
+    
+    if choice.lower() == "train":
+        train_model()
+    elif choice.lower() == "classify":
+        load_and_test_model()
+    elif choice.lower() == "classify-bulk":
+        bulk_classify()
+    else:
+        print("Invalid choice. Exiting.")
+
+elif __name__ == "__main__":
+    choice = input("Do you want to train a new model, classify a single image, or classify a group of images with one label? (train/classify/classify-bulk): ")
     
     if choice.lower() == "train":
         train_model()
