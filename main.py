@@ -1,3 +1,4 @@
+# Scott Ratchford, 2023.09.19
 
 import numpy as np
 import pandas as pd
