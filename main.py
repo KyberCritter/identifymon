@@ -1,3 +1,4 @@
+# Scott Ratchford, 2023.09.19
 
 import numpy as np
 import pandas as pd
@@ -14,11 +15,9 @@ KAGGLE_MODE = False
 if KAGGLE_MODE:
     POKEMON_FOLDER = "/kaggle/input/pokemon-vs-digimon-image-dataset/automlpoke/pokemon/"
     DIGIMON_FOLDER = "/kaggle/input/pokemon-vs-digimon-image-dataset/automlpoke/digimon/"
-    OTHER_FOLDER = "/kaggle/input/random-images/dataset/train/"
 else:
     POKEMON_FOLDER = "./data/automlpoke/pokemon/"
     DIGIMON_FOLDER = "./data/automlpoke/digimon/"
-    OTHER_FOLDER = "./data/random-images/train/"
 
 def load_and_preprocess_images(folder_path, label):
     images = []
@@ -34,14 +33,13 @@ def load_and_preprocess_images(folder_path, label):
             filenames.append(filename)
     return images, labels, filenames
 
-def prepare_data(pokemon_folder, digimon_folder, other_folder):
+def prepare_data(pokemon_folder, digimon_folder):
     pokemon_images, pokemon_labels, pokemon_filenames = load_and_preprocess_images(pokemon_folder, 0)
     digimon_images, digimon_labels, digimon_filenames = load_and_preprocess_images(digimon_folder, 1)
-    other_images, other_labels, other_filenames = load_and_preprocess_images(other_folder, 2)
     
-    images = pokemon_images + digimon_images + other_images
-    labels = pokemon_labels + digimon_labels + other_labels
-    filenames = pokemon_filenames + digimon_filenames + other_filenames
+    images = pokemon_images + digimon_images
+    labels = pokemon_labels + digimon_labels
+    filenames = pokemon_filenames + digimon_filenames
     
     X = np.array(images)
     y = np.array(labels)
@@ -57,14 +55,14 @@ def create_model():
         Flatten(),
         Dense(128, activation="relu"),
         Dropout(0.5),
-        Dense(3, activation='softmax')
+        Dense(2, activation="softmax")
     ])
     model.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
     return model
 
 def train_model():
     # Prepare data
-    X, y, filenames = prepare_data(POKEMON_FOLDER, DIGIMON_FOLDER, OTHER_FOLDER)
+    X, y, filenames = prepare_data(POKEMON_FOLDER, DIGIMON_FOLDER)
     
     # Split data
     X_train, X_test, y_train, y_test, filenames_train, filenames_test = train_test_split(X, y, filenames, test_size=0.2, random_state=42)
@@ -78,18 +76,15 @@ def train_model():
     })
     
     # Save the DataFrame to a CSV file. If the file already exists, adjust the filename.
-    if KAGGLE_MODE:
-        df.to_csv("/kaggle/working/training_file_details.csv", index=False)
-    else:
-        i = 1
-        while os.path.exists(f"training_file_details_{i}.csv"):
-            i += 1
-        df.to_csv(f"training_file_details_{i}.csv", index=False)
+    i = 1
+    while os.path.exists(f"training_file_details_{i}.csv"):
+        i += 1
+    df.to_csv(f"training_file_details_{i}.csv", index=False)
     
     # One-hot encode labels
-    y_train = to_categorical(y_train, num_classes=3)
-    y_val = to_categorical(y_val, num_classes=3)
-    y_test = to_categorical(y_test, num_classes=3)
+    y_train = to_categorical(y_train, num_classes=2)
+    y_val = to_categorical(y_val, num_classes=2)
+    y_test = to_categorical(y_test, num_classes=2)
     
     # Create and compile model
     model = create_model()
@@ -143,11 +138,8 @@ def load_and_test_model():
     # Output the result
     if predicted_label == 0:
         print(f"The model predicts this image is a Pokemon with {confidence:.2f}% confidence.")
-    elif predicted_label == 1:
-        print(f"The model predicts this image is a Digimon with {confidence:.2f}% confidence.")
     else:
-        print(f"The model predicts this image is 'Other' with {confidence:.2f}% confidence.")
-
+        print(f"The model predicts this image is a Digimon with {confidence:.2f}% confidence.")
 
 def bulk_classify():
     # Enter the folder containing the test images (all images in the folder must have the same label)
@@ -203,13 +195,10 @@ def bulk_classify():
     })
     
     # Save the DataFrame to a CSV file. If the file already exists, adjust the filename.
-    if KAGGLE_MODE:
-        df.to_csv("/kaggle/working/bulk_classification_results.csv", index=False)
-    else:
-        i = 1
-        while os.path.exists(f"bulk_classification_results_{i}.csv"):
-            i += 1
-        df.to_csv(f"./results/bulk_classification_results_{i}.csv", index=False)
+    i = 1
+    while os.path.exists(f"bulk_classification_results_{i}.csv"):
+        i += 1
+    df.to_csv(f"./results/bulk_classification_results_{i}.csv", index=False)
 
     # Output a summary of the results
     print(f"Total images: {len(test_filenames)}")
